@@ -4,6 +4,7 @@
 
 ## Project specific ####
 api.key
+raw_data/fails_data/
 
 ### macOS ###
 # General

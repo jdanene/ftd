@@ -6,6 +6,10 @@ import json
 import logging
 import atexit
 from collections import namedtuple
+from collections import deque 
+import time 
+from urllib import parse
+from requests.models import PreparedRequest
 
 #https://docs.python.org/3/library/typing.html
 #https://www.alphavantage.co/documentation/
@@ -13,6 +17,9 @@ API_KEY = "api.key"
 DB_NAME = "cache.db"
 STOCK_OVERVIEW_TABLE_NAME = "StockOverview"
 STOCK_BANNED_TABLE_NAME = "StockBanned"
+ENDPOINT = "https://www.alphavantage.co/query"
+SharesFloat = namedtuple("SharesFloat", "was_cached data")
+MarketData = namedtuple("SharesFloat", ["was_cached","data"])
 
 class ApiManager:
 	'''
@@ -32,10 +39,10 @@ class ApiManager:
 	def wait_or_go(self):
 		if len(self.buffer)<self.REQUEST_THRESHOLD:
 			self.buffer.append(time.time())
-		elif time.time() - self.buffer[-1]<self.TIMEOUT_TRESHOLD:
-			sleep_time = self.TIMEOUT_TRESHOLD- ( time.time() - self.buffer[-1] )
+		elif time.time() - self.buffer[0]<self.TIMEOUT_TRESHOLD:
+			sleep_time = self.TIMEOUT_TRESHOLD- ( time.time() - self.buffer[0] )
 			
-			self.logger.debug('Sent {} request within the last {} seconds, threshold for API is amount is {} seconds, so need to wait {} seconds '\
+			print('Sent {} request within the last {} seconds, threshold for API is amount is {} seconds, so need to wait {} seconds '\
 				.format(self.REQUEST_THRESHOLD,-1*(sleep_time-self.TIMEOUT_TRESHOLD),\
 					self.TIMEOUT_TRESHOLD, sleep_time ))
 
@@ -44,6 +51,8 @@ class ApiManager:
 		else:
 			self.buffer.append(time.time())
 
+	def rewind(self):
+		self.buffer.pop()
 
 #https://devopsheaven.com/sqlite/databases/json/python/api/2017/10/11/sqlite-json-data-python.html
 #https://www.blog.pythonlibrary.org/2012/07/18/python-a-simple-step-by-step-sqlite-tutorial/
@@ -69,10 +78,15 @@ class Ticker:
 		#manages the api calls so don't hit the threshold
 		self.api_manager = ApiManager()
 
+		self.tpc_session = requests.session()
+
 		#close conn when done
-		atexit.register(lambda: self.conn.close())
+		atexit.register(self.__cleanup)
 
-
+	def __cleanup(self):
+		self.conn.close()
+		self.tpc_session.keep_alive = False
+		self.tpc_session.close()
 
 	def _add_data_to_banned_list(self,symbol):
 		symbol = symbol.upper()
@@ -80,7 +94,7 @@ class Ticker:
 
 			self.cursor.execute("INSERT INTO {} VALUES (?)".format(STOCK_BANNED_TABLE_NAME),[symbol])
 			self.conn.commit()
-			self.logger.debug('Added {} to a banned list'.format(symbol))
+			print('Added {} to a banned list'.format(symbol))
 		except:
 			self.logger.error('Failed to add {} to a banned list'.format(symbol))
 			raise Exception('Failed to add {} to a banned list'.format(symbol))
@@ -95,6 +109,9 @@ class Ticker:
 		else:
 			return False
 
+		#cursor.execute("SELECT ticker FROM {}".format(STOCK_OVERVIEW_TABLE_NAME))
+		#cursor.fetchall()
+
 	def _get_data_from_cache(self,symbol):
 		symbol = symbol.upper()
 		self.cursor.execute("SELECT data FROM {} WHERE ticker = ?".format(STOCK_OVERVIEW_TABLE_NAME),(symbol,))
@@ -106,54 +123,95 @@ class Ticker:
 		"""
 		Takes in json
 		"""
-		symbol = aDict['Symbol'].upper()
+
+		#inconsistent api
+		dict_ ={}
+		for k,v in aDict.items():
+			dict_[k.replace(" ", "") ]=v
+
+
 
 		try:
-			self.cursor.execute("INSERT INTO {} VALUES (?, ?)".format(STOCK_OVERVIEW_TABLE_NAME),[symbol, json.dumps(aDict)])
+			self.cursor.execute("INSERT INTO {} VALUES (?, ?)".format(STOCK_OVERVIEW_TABLE_NAME),[aDict['Symbol'], json.dumps(dict_)])
 			self.conn.commit()
 		except:
-			self.logger.error(aDict)
-			raise Exception(aDict)
+			self.logger.critical(dict_)
+			raise Exception(dict_)
 
 
-	def _get_data(self,symbol):
+
+	def _get_data(self,symbol, is_cached_only = False):
 		"""
 		Returns MarketData(data=None) if error
+		if is_cached_only==True
+		- returns MarketData(true, data) if cached otherwise
+		- MarketData(False, None)
 		"""
-
+		symbol = symbol.replace(" ", "").upper()
 		# check if this is a garabge ticker
 		if self._is_ticker_banned(symbol):
-			self.logger.debug('{} is a banned symbol returning None'.format(symbol))
-			return None
+			print('{} is a banned symbol'.format(symbol))
+			return MarketData(None, None)
 
 		# check if cache has the ticker
 		data = self._get_data_from_cache(symbol)
 		if data:
-			return data 
+			return MarketData(True, data) 
+		elif is_cached_only:
+			return MarketData(False, None) 
 		else:
 		# check data from endpoint since its not here
-			self.logger.debug('{} not in cache, querying Endpoint'.format(symbol))
+			print('{} not in cache, querying Endpoint'.format(symbol))
 			url = "https://www.alphavantage.co/query?function=OVERVIEW&symbol={0}&apikey={1}".format(symbol,self.key)
+			
+			#prepare url
+			params = parse.urlencode({'function':'OVERVIEW','symbol':symbol,'apikey':self.key})
+			req = PreparedRequest()
+			req.prepare_url(ENDPOINT, params)
+
 			self.api_manager.wait_or_go()#make sure we are not sending too many req at once
-			r = requests.get(url)
+			time.sleep(3)
+			r = self.tpc_session.get(req.url)
 			data = r.json()
+
 
 			# if the endpoints hits 
 			if data:
-				self.logger.debug('{} adding to cache'.format(symbol))
-				self._add_data_to_cache(data)
+				print('{} added to cache'.format(symbol))
+				try:
+					self._add_data_to_cache(data)
+				except:
+					self.logger.critical("Error with saving to cache: {} could not be found".format(req.url))
+
+
+				return MarketData(False, data) 
 			else:
-				self.logger.warning("Symbol {} could not be found. Typo? Added to garbage ticker list sorr".format(symbol))
+				self.logger.warning("Symbol {} could not be found".format(symbol))
 				self._add_data_to_banned_list(symbol)
+				self.api_manager.rewind()
+				return MarketData(False, None) 
 
-			return data
 
 
-	def get_shares_float(self,symbol):
+	def get_shares_float(self,symbol,is_cached_only = False, exclude_drug_companies=True ):
 		#check cache to see if symbol exits
-		data = self._get_data(symbol)
-		if data:
-			return int(data['SharesFloat'])
+		market_data = self._get_data(symbol,is_cached_only)
+
+		try:
+			if market_data.data and market_data.data['SharesFloat']:
+				if exclude_drug_companies:
+					if  market_data.data['Industry'] and "PHARMA"  in market_data.data['Industry']:
+						return SharesFloat(None,None)
+					else:
+						return SharesFloat(market_data.was_cached, int(market_data.data['SharesFloat']))
+
+			else:
+				return SharesFloat(None,None)
+				
+		except:
+			self.logger.error(market_data.data)
+
+			Exception(market_data.data)
 
 
 	def get_price_history(self,symbol, outputsize = "compact"):
