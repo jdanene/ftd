@@ -18,7 +18,7 @@ NASDAQ_CSV = "nasdaqlist_1625204865858.csv"
 # https://stockmarketmba.com/listofmostheavilyshortedstocks.php
 SHORTED_CSV = "shorted_list_stock.csv"
 
-RAW_DATA_DIR = "raw_data"
+RAW_DATA_DIR = os.path.join("raw_data","fails_data")
 
 
 
