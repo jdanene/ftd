@@ -4,7 +4,7 @@
 
 ## Project specific ####
 api.key
-raw_data/fails_data/
+data/raw_data/fails_data/
 .env
 ### macOS ###
 # General
