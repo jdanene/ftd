@@ -6,16 +6,19 @@ import json
 import logging
 import atexit
 from collections import namedtuple
-from collections import deque 
-import time 
 from urllib import parse
 from requests.models import PreparedRequest
+from dotenv import load_dotenv
+from .api_utilities import ApiManager,get_root_dir
 
-def get_root_dir():
-	return os.popen("git rev-parse --show-toplevel").read()[:-1]
+load_dotenv()  # take environment variables from .env.
+
+
 #https://docs.python.org/3/library/typing.html
 #https://www.alphavantage.co/documentation/
+
 API_KEY = os.getenv("ALPHA_ADV_APIKEY")
+print('alphavantage API Key {}'.format(API_KEY))
 DATA_PATH = os.path.join(get_root_dir(),"data")
 DB_NAME = os.path.join(DATA_PATH,"cache.db")
 STOCK_OVERVIEW_TABLE_NAME = "StockOverview"
@@ -25,50 +28,25 @@ TIMEOUT_TRESHOLD = 100
 REQUEST_THRESHOLD = 75 
 
 
+
 SharesFloat = namedtuple("SharesFloat", "was_cached data")
 
 MarketData = namedtuple("SharesFloat", ["was_cached","data"])
 
-class ApiManager:
-	'''
-	Free api can send 500 req per a day
-	can send 5 req every 1min
 
-	If the request fails i think it doesnt cound against u
-	need to update to add this cuz this will take long
-	'''
-	def __init__(self):
-		self.TIMEOUT_TRESHOLD = TIMEOUT_TRESHOLD
-		self.REQUEST_THRESHOLD = REQUEST_THRESHOLD
-		self.buffer = deque(maxlen=self.REQUEST_THRESHOLD)
-		self.logger = logging.getLogger(__class__.__name__)
-		self.logger.setLevel(logging.DEBUG)
-
-	def wait_or_go(self):
-		if len(self.buffer)<self.REQUEST_THRESHOLD:
-			self.buffer.append(time.time())
-		elif time.time() - self.buffer[0]<self.TIMEOUT_TRESHOLD:
-			sleep_time = self.TIMEOUT_TRESHOLD- ( time.time() - self.buffer[0] )
-			
-			print('Sent {} request within the last {} seconds, threshold for API is amount is {} seconds, so need to wait {} seconds '\
-				.format(self.REQUEST_THRESHOLD,-1*(sleep_time-self.TIMEOUT_TRESHOLD),\
-					self.TIMEOUT_TRESHOLD, sleep_time ))
-
-			time.sleep(sleep_time)
-			self.buffer.append(time.time())
-		else:
-			self.buffer.append(time.time())
-
-	def rewind(self):
-		self.buffer.pop()
 
 #https://devopsheaven.com/sqlite/databases/json/python/api/2017/10/11/sqlite-json-data-python.html
 #https://www.blog.pythonlibrary.org/2012/07/18/python-a-simple-step-by-step-sqlite-tutorial/
 class Ticker:
+
+	# static var
+	#manages the api calls so don't hit the threshold
+	api_manager = ApiManager(TIMEOUT_TRESHOLD,REQUEST_THRESHOLD)
+
 	def __init__(self):
 		# get api key
-		self.key = API_KEY
-		assert not self.key, "Missing alphavantage api key"
+		self.key = os.getenv("ALPHA_ADV_APIKEY")
+		assert  self.key!=None, "Missing alphavantage api key"
 		# connect to sql lie
 		self.conn = sqlite3.connect(DB_NAME) # or use :memory: to put it in RAM
 		self.cursor = self.conn.cursor()
@@ -81,8 +59,7 @@ class Ticker:
 		self.logger = logging.getLogger(__class__.__name__)
 		self.logger.setLevel(logging.DEBUG)
 
-		#manages the api calls so don't hit the threshold
-		self.api_manager = ApiManager()
+
 
 		self.tpc_session = requests.session()
 
@@ -145,7 +122,6 @@ class Ticker:
 			raise Exception(dict_)
 
 
-
 	def _get_data(self,symbol, is_cached_only = False):
 		"""
 		Returns MarketData(data=None) if error
@@ -176,7 +152,6 @@ class Ticker:
 			req.prepare_url(ENDPOINT, params)
 
 			self.api_manager.wait_or_go()#make sure we are not sending too many req at once
-			time.sleep(2)
 			r = self.tpc_session.get(req.url)
 			data = r.json()
 

@@ -1,5 +1,5 @@
 from . import MEME_STOCKS,BANNED_LIST
-from .api_access import Ticker
+from .api_access import Ticker, TdAmeritrade
 import logging
 from tqdm import tqdm
 import pandas as pd
@@ -10,7 +10,8 @@ import numpy as np
 from enum import Enum
 import os 
 from pathlib import Path
-
+import datetime
+import pathlib
 
 def get_root_dir():
 	return os.popen("git rev-parse --show-toplevel").read()[:-1]
@@ -31,27 +32,37 @@ class DataOptions(Enum):
     ALL = 1
     SHORTED_ONLY = 2
     CACHED_ONLY = 3
-
 default_option = DataOptions.ALL
+
 
 class Database:
 
-	def __init__(self):
+	def __init__(self,  most_recent_only = False):
 		self.logger = logging.getLogger(__class__.__name__)
 		self.logger.setLevel(logging.DEBUG)
-
+		self.most_recent_only = most_recent_only
 
 		# get ftd data
 		self.df = self.__get_ftd_data()
 		
 		#add new col
 		self.df["Float"] = np.nan
+		self.df["HasOptions"] = False
+		
+		self.tda_access = TdAmeritrade()
+
 		#self.df['FTD/Float'] = self.df['QUANTITY (FAILS)'] 
 		#self.df['STD_fails'] = self.df['QUANTITY (FAILS)'] 
 		#self.df['MEAN_fails'] = self.df['QUANTITY (FAILS)'] 
 
 		self.logger.debug("Finished getting FTD data")
 
+
+	def __get_most_recent_ftd_data(self):
+		self.logger.debug("Getting FTD data")
+		files = self.__find_files()
+		files = [(datetime.datetime.fromtimestamp(pathlib.Path(f).stat().st_mtime),f) for f in files]
+		return max(files,key=lambda item:item[0])[1]
 
 	def __get_ftd_data(self):
 		self.logger.debug("Getting FTD data")
@@ -105,10 +116,6 @@ class Database:
 				if shares_float.data:
 					try:
 						self.__update_stats(sym,shares_float.data)
-						#sleep if not cached
-						if not shares_float.was_cached:
-							time.sleep(timeout)
-
 						count+=1
 					except Exception as e:
 						print("{} \n SYMBOL: {}".format(str(e),sym))
@@ -119,6 +126,8 @@ class Database:
 			else:
 				self.__update_stats(sym,MEME_STOCKS[sym])
 				count+=1
+
+		self.df = self.df[self.df['Float'].notna()]
 
 		print("Finished, {} stocks currently in dataframe for your analysis".format(count))
 		
@@ -141,7 +150,8 @@ class Database:
 
 
 	def __update_stats(self,sym,shares_float):
-		print(shares_float)
+		optionable=self.tda_access.has_options(sym)
+		print("{} has float {}, and options={}".format(sym,str(shares_float),optionable))
 		#df.loc[df['SYMBOL'] == sym, 'Float'] = shares_float
 
 
@@ -149,12 +159,18 @@ class Database:
 		#new = np.array([float(shares_float) for i in range(len(old))])
 		
 		self.df.loc[self.df['SYMBOL'] == sym, 'Float'] = shares_float
+		try:
+			self.df.loc[self.df['SYMBOL'] == sym, 'HasOptions'] = optionable
+		except:
+			print("Falied to get options for {}".format(sym))
+			pass
 
 
 
 
 
-#ftd_data = Database()
+
+ftd_data = Database()
 #ftd_data.setup(shorted_only=True)
 
 #df = ftd_data.df[ftd_data.df['SYMBOL'] == 'AA']

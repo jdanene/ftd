@@ -1,0 +1,202 @@
+Shout out to u/Araphoren who grinded away on the weekend with me to write this. 
+
+# Part 0: Intro
+
+It’s your local [Negghead](https://www.reddit.com/user/repos39/comments/ofltf9/whats_going_on_with_negg_a_ticker_with_35m_float/) coming to you live and direct, *pre-moon* this time. Not going to lie, the week of the mooning was crazy and honestly, I actually wanted to quit the game. Though I love waking up by 6:30am every day and watching my portfolio wobble in directions that would give your boomer parents heart attacks while quietly whispering to myself, “everything’s *ok* \-- just have **🦍**💎🙌” like my dad [u/DeepFuckingValue](https://www.reddit.com/user/DeepFuckingValue/) (*Can you* ***please*** *check Venmo? My request has been pending for 6mo.*), I want to spend my degenerate years doing other things -- maybe knitting. But my reptilian brain saw something that looked just a bit too off for me to ignore, so here I am to share.…
+
+📷
+
+# Part 1: The Company
+
+Support.com is a company that has some pretty shitty financials, which is probably the reason it has 60%-80% of its float shorted, has a 98% short utilization rate, and is hit with so many FTDs that it’s on the [SHO regulation list](http://www.nasdaqtrader.com/trader.aspx?id=regshothreshold).
+
+Vulture funds have been trying to expedite bankruptcy by shorting the shit out of its [8.2mil float (yahoo)](https://finance.yahoo.com/quote/sprt/key-statistics?p=sprt). But like a phoenix rising from the ashes, Support.com will now take the form of a new reverse merger with [**Greenidge**](https://greenidgellc.com/static/greenidge-support-com/presentation.pdf) (closing GREE), a green crypto mining player The merger is due to close any day now.
+
+**The Merger**
+
+* **Merger is set to close in Q3** \- basically any day now - at which point, all Support.com shares become 8% of Gree’s outstanding.
+* **Estimated** **$1.4bn-2.2bn** **market cap** on closing as a result of its $281mil EBITDA (5-8x) by EOY 2022. This is consistent with RIOT ($257m by EOY 2022) and MARA ($321m by EOY 2022). As a result, fair value of Support.com at the reverse merger is at least  $7.5 -- 85% higher than current valuation\*\*.\*\*
+* **The deal is practically done,** with Greenidge amending its [share registration](https://www.sec.gov/Archives/edgar/data/0001844971/000119312521217543/d166032ds4a.htm) last Friday (July 16th) and Support having their annual shareholder meeting tomorrow ([July 19th](https://www.reuters.com/companies/SPRT.O/events)). The short bear case is blown.
+
+**The New Company: Greenidge-Support (GREE)**
+
+* **Power plant**: Greenidge owns an entire green power plant in upstate NY for the purpose of crypto mining at rates **500% cheaper** than RIOT or MARA. They can dynamically switch between using the power generated to sell to customers or to mine crypto, which puts them in an unique position relative to the rest of crypto miners.
+* **Cheap costs**: It costs Greenidge $2.8k to mine 1 BTC. This is nuts. As a reference, it costs MARA $15k to mine 1 BTC (Feb quote).
+* **Hash rate** **& rigs:** Has an estimated 1.1EH (mining speed rate), which was where RIOT and MARA were as recently as Feb, and just announced the purchase of [more rigs last week](https://www.sec.gov/Archives/edgar/data/0001844971/000119312521214711/d166032d425.htm) and a [new expansion into South Carolina](https://www.sec.gov/Archives/edgar/data/0001844971/000119312521207191/d166032d425.htm).
+* **Dual income**: Greenidge’s mining is already up running and Support.com will continue its work post-merger -- kinda like bonus money. Plus as said before, they can provide power to customers.
+* **Additional revenue**: Energy markets, capacity markets, and waste heat will all provide additional income for Greenidge.
+
+📷
+
+Management knows what they’re doing. I mean they legit cucked the NY State Congress, convincing pretty liberal senators to change a law and [allow a natural gas power plant near a lake](https://www.coindesk.com/new-york-crypto-mining-bill-dies-in-assembly-after-passing-state-senate). It’s clean energy and safe but still, they lobby better than [Nancy Pelosi knows how to trade yolo options](https://twitter.com/unusual_whales/status/1412417817056628744?s=20), and that's saying something.
+
+📷
+
+**Caption: Pelosi be “imsogold” or PeePow!!!!**
+
+The DD for the company can get quite long, and you can easily search around and find a more comprehensive valuation basis, but the company isn’t garbage. I’m not here to talk too much about fundamentals, though they are strong. I'm here to add to the existing knowledge with lizard brain technical setup theory.
+
+# Part 2: Lizard
+
+📷
+
+## Float
+
+The float actually available to the public is important. Yahoo uses 8.2m shares as float, but it differs depending on the website. **Turns out this 8.2m number is an overcount -- the actual float is just below 5.5m.** I’ll show my numbers and math below, but lowkey it’s pretty boring, so feel free to jump over it all.
+
+**Begin Math:**
+
+As a baseline I assumed the high estimate of 24m shares outstanding, though finviz says [shares outstanding is 20m](https://finviz.com/quote.ashx?t=SPRT). From there, I took a dive into some SEC 13f filings and merger filings -- funnnnnn. Btw 13f filings are released quarterly for fund managers with >100m in assets and show their individual holdings.
+
+&#x200B;
+
+1. **Greenidge Generation**
+
+Surprise surprise -- the company that Support is merging with owns a large stake. But how large is large? For this bad boi, we’ll look at the [​​S-4/A (2nd page, before Table of Contents)](https://www.sec.gov/Archives/edgar/data/0001844971/000119312521217543/d166032ds4a.htm). As part of the merger agreement, let’s note that 210 Capital, LLC has already acquired 3,909,871 shares of Support. Additionally according to the [S-4](https://www.sec.gov/Archives/edgar/data/0001844971/000119312521217543/d166032ds4a.htm), Greenidge holds 30% of shares outstanding. Quick math: 3,909,871 / 24,000,000 is 16.3%. 1 + 1 + 2 = 4, but if Bezos is going to the moon it’s 6. Sorry -- got distracted, but quick math shows that 30% + 16.3% = 46.5% of shares outstanding accounted for.
+
+**2. Radoff Bradley Louis, AKA Chad**
+
+According to the [13D/A](https://sec.report/Document/0001193125-21-098531/) that Radoff Bradley -- my wife’s boyfriend -- filed, he owns 1,301,874 shares of Support: about 5.5%. Quick math: 46.5%+5.5% = 52% of shares accounted for.
+
+**3. Insiders**
+
+Though I prefer to look at filings to verify the accuracy of numbers, especially with respect to float, it’s tiring af reading through this obscure verbiage, so let’s just rely on the insider ownership reported [here](https://docoh.com/company/1104855/SPRT/insider-ownership-history). If we sum the columns, we get to 3,155,080 of Support held by insiders, with 922,223 of this number being non-qualified stock options. I’m not sure if this is the total number of options or the total number of shares that these options represent, so let’s ignore them, leaving us with 2,232,857 common + restricted shares held by Support insiders, or 9.3% of the company. Quick math: 52% + 9.3% = 61.3% of shares accounted for.
+
+**4. Kershner Trading Americas**
+
+In their last [13G/A filing they had 638,265 shares of Support](https://sec.report/Document/0001535384-21-000017/), down from the 1,240,957 shares they had in April, but shares are shares. So that's 2.6% of Support. Quick math: 61.3% + 2.6% =  63.9% of shares accounted for.
+
+**5. Renaissance Technologies**
+
+Oh this name sticks out. Their last filing was the Q1 [13F on 5/13](https://sec.report/Document/0001037389-21-000330/). If you download the XML, put it into your fave text editor (arhmm SublimeText), and search for Support’s CUSIP number: 86858W200, you’ll see our baby lil gem shining like a star. So Renaissance owns 831,549 shares of Support, or around 3.5%. Quick math: 63.9% + 3.5% = 67.4% of shares accounted for.
+
+**6. Blackrock**
+
+Ok ok big dick willy Blackrock is in the house! Same thing as Renaissance, [Q1 13F on 5/13](https://sec.report/Document/0001086364-21-000038/) \-- download the XML search for Support’s CUSIP number: 86858W200, you’ll see lil babes. Blackrock owns 388,037 shares, or around 1.6%. Quick math: 67.4% + 1.6% = 69% of shares accounted for.
+
+**7. Vanguard**
+
+Ah the people who came up with the concept of an ETF. Nice, safe, and friendly 1% YoY returns, ETFs those things, aka not Support [🚀](https://emojipedia.org/rocket/)🌚. Check the [Q1 13F](https://sec.report/Document/0001104659-21-066511/primary_doc.html), and see babes Vanguard owns 824,888 shares, 3.4% of Support. Quick math: 69% + 3.4% = 72.4% of shares accounted for.
+
+**8. Geode Capital Management**
+
+See [Q1  13F](https://sec.report/Document/0001214717-21-000010/) see babes Geode own 149152 0.62% -- good numer. math add 73%.
+
+**9. Bridgeway Capital**
+
+Bridgeway capital [Q1 13F](https://sec.report/Document/0001085146-21-001703/)  own 120k, .05%, number good me like total 73.5%
+
+Fuck, I can’t continue looking at these fucking filings. Vyvanse is starting to wear off and I’m starting to talk like an ape. Let’s wrap it up. 73.5% of shares are held by institutional investors or employees, so we’re at a 6.36m float. Since we’re trying to be precise, when the filing says “*Greenidge approximately owns 30% of Support*”, they actually mean [**31.8%**](https://www.sec.gov/Archives/edgar/data/0001844971/000119312521097400/d145424dsc13d.htm). So it’s actually 75.3%, which makes the float closer to 5.92m. *But, it turns out institutions own a bit more through* [*mutual funds*](https://fintel.io/somf/us/sprt#)*.*
+
+Fuck it, let’s do more mindnumbing calculations. For mutual funds, if you calculate all the ones listed that are not Vanguard and Bridgeway, that’s approx 580k shares of Support owned or 2.4% of shares outstanding. 75.3% + 2.4% = 77.7%, which brings us to a 5.352m float. It’s annoying AF, but you have to calculate this shit by hand since the data online is sometimes off. Trust but verify.
+
+**End Math**
+
+**TLDR; the float is just under 5.5m due to institutions, merger deals, and mutual funds.**
+
+Variables impacting a squeeze include **(1) limited float,** (2) tightening short constraints, (3) price instability, and (4) major positive catalysts. Clearly number (1) has been addressed. Moving on to number (2)...
+
+## Tightening Short Constraints
+
+Support just made the [SHO Threshold Security List](http://www.nasdaqtrader.com/trader.aspx?id=regshothreshold) last week (July 16), a situation that experts ([this paper, pg 5](https://poseidon01.ssrn.com/delivery.php?ID=460001024021101094085092067118001009096071084081032094122125066027002116091003082087118100026102007005055068066083017113126119122066055034084122098082006028078000066072020018127014005021125125023007018071121127069109079113087074112000079001014017106113&EXT=pdf&INDEX=TRUE)) label as:
+
+>an exogenous shock that tightens the short sale constraint.
+
+This coincides with a major T+35 closeout period from a massive spike in Failure-To-Delivers coming due next week (more later). Historic volatility has been increasing and it has been getting more intense the past 5-10 trading days. Bullish flow is repeatedly met by short sellers (Ortex daily data shows increases) to keep the stock falling. Short sellers are aggressive, leaving Support on the Sho Threshold Security list for the last two days in their attempts. So, some short seller(s) is(are) pretty underwater and can’t afford the price to rise even 5%.
+
+**Short Interest**
+
+* **4.5mil shorts on loan** (of a 5.5mil float)
+* **100% utilization rate** (no shares to borrow)
+* **Soaring cost to borrow** (short demand is high / supply is low)
+* **Bullish consolidation up**
+
+Why is it so hard to borrow? Even if the **5mil on loan** Ortex estimate is off, **exchange reported SI is 4.5mil (of a 5.5mil float)**. Shorts are completely maxed out unless they start working over 100% float short interest, which didn’t end so well for them last time (see GME).
+
+📷
+
+All metrics that Ortex provides are soaring. Shares on loan, utilization, cost to borrow, even days to cover are peaking, indicating that shorting constraints are getting in a critical area. After the deep dive on filings, it’s clear that 4.51mil / 5.5mil shares -- AKA 82% of the float --  are sold short and shorts have taken a huge position. Note that 4.51m SI is the number reported by exchanges as of June 12th. In the NEGG DD, I made a case that FTD spikes correspond with shorts opening large positions. Support has had FTD spikes from June 9th to June 30th, and it has been on the Sho Threshold Security list since last Thursday, so we can infer that there are FTD spikes happening right now. So, considering the Ortex metrics are spiking and FTDs are off the charts to the point that Support has been on the Sho Threshold Security list for multiple weeks in June and is on it right now, ***the 4.51m SI number reported by exchanges as of June 12 is pretty conservative IMO.***
+
+**FTD Squeeze**
+
+But wait, there’s more. In my previous NEGG DD, I made a case that FTDs can be used as an approximation for the point when shorts are the most vulnerable. How do FTDs translate to upward potential?
+
+The [SEC and SHO regulations](https://www.sec.gov/investor/pubs/regsho.htm) state that shorts **must** close out within 35 days (T+35) from hitting a Fail-to-Deliver. Excerpt from Section IV. 3 below:
+
+>Rule 204 provides an extended period of time to close out certain failures to deliver. Specifically, if a failure to deliver position results from the sale of a security that a person is deemed to own and that such person intends to deliver as soon as all restrictions on delivery have been removed, the firm has up to 35 calendar days following the trade date to close out the failure to deliver position by purchasing securities of like kind and quantity.
+
+📷
+
+Guess when T+35 is from the gigantic spike in June? That’s right.
+
+June 15th + 35 days = July 20 (this coming Tuesday). Tuesday and the next two weeks should see solid volatility, and volatility is profitable. Let’s zoom in on this FTD activity. We see aggressive opening of short positions with a negligible effect on the price. Shorts are deep, which makes sense for the repeated attempt at forcing down any increase in price, protecting a fragile underwater position.
+
+📷
+
+Usually, as you can see in the graph below for my other babes PUBM, large FTD spikes are usually associated with rather deep depressions in price -- usually around local (or global) minimums. This is not happening with Support, so shorts are exhausting a lot of capital with marginal effects on the price. This is good.
+
+## 📷
+
+**Cost to Borrow & Short Availability**
+
+The borrow rate below concurs that shorts are becoming tight and locating shares to borrow is becoming harder and harder. Shorts are going underwater and this coincides with the major activity recently. They are spiking up the cost to borrow and depleting the number of shares available to borrow while the price bleeds up.
+
+📷
+
+**Caption: Red is cost to borrow and blue is number of shares available to borrow**
+
+No shares left to borrow after the shorts shorted down the 200k in call options when the market opened Friday. Last week Support had run out of shares to borrow multiple times, and this can explain the Sho Threshold Security List inclusion on Thursday / Friday since, if they could short by regular means, then Support would not be on the list.
+
+📷
+
+## Price Instability**
+
+Price is becoming increasingly more unstable -- AKA liquidity is drying up, which makes sense since so much of the float is locked up. Why is this important, BTW? Well quickly,  before AMC popped  $70+ there was extreme after-hours volume in which tick data displayed one of the telltale signs of extremely poor liquidity & price instability (barcoding).
+
+📷
+
+There are some good approximations for price instability. Intraday, there Support is showing widening bid / ask spreads and a limited orderbook. Historic volatility is also increasing.
+
+📷
+
+I’ve also noticed that over the past 5-10 trading days, the price has become even more volatile. Last Thursday and Friday, you can look at the tape and see that the bullish flow of price peaks of 4%+ is met by immediate shorting. Normal players don’t get excited by a 4% intraday price move; that’s not an investor, and retail in this situation would be encouraged to FOMO and buy more. That’s a short seller protecting a price point in an increasingly unstable environment.
+
+Shit indicators are even picking this up as well -- see below.
+
+📷
+
+## Positive Catalyst
+
+Why are these shorts so deep? Seems like they were hoping the merger would fall through before they needed to cover after trying to short Support.com into oblivion pre merger news in March. Now they need to cover their shorts before the merger happens or they’re fucked.
+
+Unfortunately for them, all is good on the GREE front. Greenridge updated their [share registration](https://www.sec.gov/Archives/edgar/data/0001844971/000119312521217543/d166032ds4a.htm) with Support.com on Friday. People have also noticed that there is now a scheduled meeting on [Monday at 11am](https://www.reuters.com/companies/SPRT.A/events). The entire Support.com team sent a message back in the winter to their team, holders, and investors, basically drooling over this passing, and we have confirmation it’s working its way forward. Also, Greenridge and their investors already own 46%+ of Support (see the float section).
+
+**The bear case seems to be on unstable grounds.**
+
+# Part 3: Technical Setup
+
+We touched briefly on the technical setup earlier.
+
+* Support is solid
+* Bottom of trendline
+* In a standard deviation channel and RSI is coiling on the 4hr
+* FTD positive impact to be seen in following 2 weeks
+* Upper resistance is easily broken with a move up from shorts closing
+* Confirmed by recent 8/20 calls for 5.5c
+* Cup and handle
+
+📷
+
+In addition to current short set up:
+
+* **SI is at an all time high.** 4.5mil short of an estimated 5.5mil-8.2mil float
+* **Utilization is 97%** = no more ammo for shorts
+* **3x daily volume** needed for shorts to close
+
+📷
+
+# Part 4: TLDR Positions
+
+Who knows what happens with price volatility, but the margin of safety is getting larger and larger (at least for me). Risk-reward ratio is good for me, and the probability of bullish action post merger, for me, seems pretty high; hence I’m betting on GREE. Position is crazy right now. I’ll update with further holdings on Monday.
+
+5c, 5.5c, 6c

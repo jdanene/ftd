@@ -1,6 +1,7 @@
 
 constant= 1000000
 MEME_STOCKS={
+'BODY':30*constant,
 'DLO':29*constant,
 'AIO':34.34*constant,
 'DTSS':6.5*constant,
