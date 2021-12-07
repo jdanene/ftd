@@ -1,0 +1,2 @@
+Shoot - all that stuff is at work. I have a few different data sources and some to fit to your thesis on FTDs. Let me see what I can pull for ya.
+The regression is easy - I just take a look at the FTD numbers + price action (high minus close of previous day to simulate the short cover candle), use the standardize function in excel for all numbers, and plot out.

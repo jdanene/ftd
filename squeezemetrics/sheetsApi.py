@@ -12,7 +12,7 @@ def get_or_create_credentials(scopes):
 	return ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scopes)
 
 
-def append_row_to_gsheet(list_of_vals):
+def append_row_to_gsheet(list_of_vals, gsheet):
 	spreadsheet_id = '1wrDGscPisgbTnwK1TMKVE83n_k_vCr3i5m4Mi4NaZEY'  # this is part of the url of google
 	rows = [list_of_vals]
 	# -----------
@@ -21,7 +21,7 @@ def append_row_to_gsheet(list_of_vals):
 	service = build('sheets', 'v4', credentials=credentials)
 	service.spreadsheets().values().append(
 		spreadsheetId=spreadsheet_id,
-		range="raw_data!A:Z",
+		range="{}!A:Z".format(gsheet),
 		body={
 		    "majorDimension": "ROWS",
 		    "values": rows

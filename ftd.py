@@ -77,8 +77,8 @@ class Analyse:
 		"""
 		Or load saved data
 		"""
-		f = os.path.join(DATA_PATH,fname)
-		df = self.pd.read_parquet(f,engine='fastparquet')
+		f = os.path.join(DATA_PATH,fname+".parquet")
+		df = pd.read_parquet(f,engine='fastparquet')
 		self.setup(df)
 		print("Loaded df from {}".format(f))
 
@@ -264,15 +264,19 @@ class Analyse:
 			plt.show()
 
 
-df = pd.read_pickle('7_14_21__35dIncrease.pickle')
+df = pd.read_pickle('08_20_2020.pickle')
 # Get Database
 ftd_data = Database()
 ftd_data.setup(data_option=DataOptions.ALL, exclude_drug_companies = True)
 # Prepare fo analysis
 
 analyze = Analyse(ftd_data.df)
-
+analyze.save_df("09_21_2020")
 df_10pc_increase = analyze.add_change_since_n_days(35)
+
+analyze = Analyse()
+analyze.load_df("08_20_2020")
+analyze.
 
 analyze = Analyse(df)
 analyze.ticker_ranking('AYRO')
@@ -282,7 +286,10 @@ analyze = Analyse(df_5day_increase_filter)
 
 
 analyze = Analyse(df_2day_increase_filter)
-analyze.ticker_ranking('NYMT')
+analyze.ticker_ranking('FUSE')
+analyze.ticker_ranking('TMC')
+analyze.ticker_ranking('IRNT')
+
 # Does increasdrd in volume signal something
 df_10pc_increase_filter = df_10pc_increase[df_10pc_increase["{}d_priceChange".format(35)] >= 10]
 df_5pc_increase_filter = df_10pc_increase[df_10pc_increase["{}d_priceChange".format(35)] >= 5]
@@ -317,19 +324,19 @@ analyze_5pc_35day.graphMe(24+12*3,'graph5',1,optionsOnly=True)
 
 analyze.save_df("07_13_2021")
 
-analyze.ticker_ranking('AEI',True)
-analyze.ticker_ranking('AEI',False)
+analyze.ticker_ranking('GENI',True)
+analyze.ticker_ranking('GENI',False)
 
 set(analyze.df["SYMBOL"])
 
 analyze.graph("0_72")
 analyze.graph(title='maingraph')
-analyze.graphMe(1, 'graph0',optionsOnly=True)
+analyze.graphMe(2, 'graph0',optionsOnly=False)
 analyze.graphMe(12,'graph1',optionsOnly=True)
 analyze.graphMe(24,'graph2',optionsOnly=True)
 analyze.graphMe(24+12,'graph3',optionsOnly=True)
 analyze.graphMe(24+12*2,'graph4',optionsOnly=True)
-analyze.graphMe(24+12*3,'graph5',1,optionsOnly=True)
+analyze.graphMe(24+12*6,'graph5',1,optionsOnly=True)
 
 c = TdAmeritrade()
 c.change_since_nDays('PEI',35)

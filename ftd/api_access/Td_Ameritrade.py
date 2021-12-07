@@ -24,6 +24,13 @@ load_dotenv()  # take environment variables from .env.
 
 REDIRECT_URI = "http://localhost"
 PATH_TO_CREDENTIALS_FILE = os.path.join(os.path.join(get_root_dir()),"token.pickle")
+
+#try:
+	#os.remove(PATH_TO_CREDENTIALS_FILE)
+#except OSError:
+	#pass
+
+
 API_KEY = "{}@AMER.OAUTHAP".format(os.getenv("TD_AMERI_APIKEY"))
 
 epoch = datetime.utcfromtimestamp(0)
@@ -122,6 +129,24 @@ class TdAmeritrade:
 		else:
 			return 0
 
+	def get_details(self,ticker):
+		self.api_manager.wait_or_go()#make sure we are not sending too many req at once
+		r = self.client.search_instruments(
+			ticker.upper(),
+			client.Client.Instrument.Projection.FUNDAMENTAL
+			)
+		assert r.status_code == 200, self._retry_request(ticker,r)
+
+
+		
+		return r.json()[ticker.upper()]['fundamental']
+
+	def get_float(self,ticker):
+		json = self.get_details(ticker)
+		return 
+
+
+
 
 	def has_options(self, ticker):
 		self.api_manager.wait_or_go()#make sure we are not sending too many req at once
@@ -137,7 +162,5 @@ class TdAmeritrade:
 		return float(r.json()['numberOfContracts'])>0
 		#print(r.json()['numberOfContracts'])
 		#print(json.dumps(r.json(), indent=4))
-
-
 
 

@@ -112,6 +112,7 @@ class Database:
 					
 				shares_float = float_getter.get_shares_float(sym,exclude_drug_companies=exclude_drug_companies, is_cached_only= (data_option==DataOptions.CACHED_ONLY))
 
+				print(shares_float)
 
 				if shares_float.data:
 					try:

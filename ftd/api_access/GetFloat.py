@@ -10,6 +10,9 @@ from urllib import parse
 from requests.models import PreparedRequest
 from dotenv import load_dotenv
 from .api_utilities import ApiManager,get_root_dir
+import yfinance as yf
+
+
 
 load_dotenv()  # take environment variables from .env.
 
@@ -152,16 +155,27 @@ class Ticker:
 			req.prepare_url(ENDPOINT, params)
 
 			self.api_manager.wait_or_go()#make sure we are not sending too many req at once
-			r = self.tpc_session.get(req.url)
-			data = r.json()
+			#r = self.tpc_session.get(req.url)
+			#data = r.json()
 
+			try: 
+				data = yf.Ticker("RBLX").info
+				if "floatShares" in data:
+					data["SharesFloat"] = data.pop("floatShares")
+					data["Symbol"] = symbol
+				else:
+					data = None 
+			except:
+				data = None
 
 			# if the endpoints hits 
 			if data:
 				print('{} added to cache'.format(symbol))
 				try:
 					self._add_data_to_cache(data)
-					return MarketData(False, data) 
+					x = MarketData(False, data) 
+					#print('errpr here? ',x)
+					return x
 
 				except:
 					print("Error with saving to cache: {} could not be found".format(req.url))
@@ -182,11 +196,14 @@ class Ticker:
 
 		try:
 			if market_data.data and market_data.data['SharesFloat']:
-				if exclude_drug_companies:
-					if  market_data.data['Industry'] and "PHARMA"  in market_data.data['Industry']:
-						return SharesFloat(None,None)
-					else:
-						return SharesFloat(market_data.was_cached, float(market_data.data['SharesFloat']))
+				#print("Condition met")
+				#if exclude_drug_companies:
+					#if  market_data.data['Industry'] and "PHARMA"  in market_data.data['Industry']:
+						#return SharesFloat(None,None)
+					#else:
+				#print('returned from get_shares_float')
+				print(SharesFloat(market_data.was_cached, float(market_data.data['SharesFloat'])))
+				return SharesFloat(market_data.was_cached, float(market_data.data['SharesFloat']))
 
 			else:
 				return SharesFloat(None,None)

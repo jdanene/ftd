@@ -2,7 +2,7 @@ import time
 from collections import deque 
 import os
 import logging
-
+buffer_ = deque(maxlen=5)
 
 def get_root_dir():
 	return os.popen("git rev-parse --show-toplevel").read()[:-1]
